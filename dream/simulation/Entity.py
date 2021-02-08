@@ -26,93 +26,101 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 '''
 
 # from SimPy.Simulation import now
+
+# ===========================================================================
+# The entity object
+# ===========================================================================
+
+
+
+
 import simpy
-from ManPyObject import ManPyObject
-
-# ===========================================================================
-# The entity object 
-# ===========================================================================
+from dream.simulation.ManPyObject import ManPyObject
 class Entity(ManPyObject):
-    type="Entity"
+    type = "Entity"
 
-    def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
-                 isCritical=False, remainingProcessingTime=0,remainingSetupTime=0,currentStation=None,
-                 status='Good',**kw):
-        ManPyObject.__init__(self,id,name)
+    def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0,
+                 isCritical=False, remainingProcessingTime=0, remainingSetupTime=0, currentStation=None,
+                 status='Good', **kw):
+        ManPyObject.__init__(self, id, name)
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
-        #         information on the lifespan of the entity  
-        self.creationTime=0
-        self.startTime=0            #holds the startTime for the lifespan
+        #         information on the lifespan of the entity
+        self.creationTime = 0
+        self.startTime = 0  # holds the startTime for the lifespan
         #         dimension data of the entity
-        self.width=1.0
-        self.height=1.0
-        self.length=1.0
+        self.width = 1.0
+        self.height = 1.0
+        self.length = 1.0
         #         information concerning the sorting of the entities inside (for example) queues
-        self.priority=float(priority)
-        self.dueDate=float(dueDate)
-        self.orderDate=float(orderDate)
-        #         a list that holds information about the schedule 
+        self.priority = float(priority)
+        self.dueDate = float(dueDate)
+        self.orderDate = float(orderDate)
+        #         a list that holds information about the schedule
         #         of the entity (when it enters and exits every station)
-        self.schedule=[]
+        self.schedule = []
         # the current station of the entity
-        self.currentStation=currentStation
+        self.currentStation = currentStation
         #         values to be used in the internal processing of compoundObjects
-        self.internal = False               # informs if the entity is being processed internally
+        # informs if the entity is being processed internally
+        self.internal = False
         if isinstance(isCritical, unicode):
-            self.isCritical=bool(int(isCritical))
-        elif isinstance(isCritical, int): 
-            self.isCritical=bool(isCritical)          # flag to inform weather the entity is critical -> preemption
+            self.isCritical = bool(int(isCritical))
+        elif isinstance(isCritical, int):
+            # flag to inform weather the entity is critical -> preemption
+            self.isCritical = bool(isCritical)
         else:
-            self.isCritical=isCritical
-        self.manager=None                   # default value
-        self.numberOfUnits=1                # default value
+            self.isCritical = isCritical
+        self.manager = None                   # default value
+        self.numberOfUnits = 1                # default value
         # variable used to differentiate entities with and entities without routes
-        self.family='Entity'
-        
+        self.family = 'Entity'
+
         # variables to be used by OperatorRouter
-        self.proceed=False               # boolean that is used to check weather the entity can proceed to the candidateReceiver
-        self.candidateReceivers=[]          # list of candidateReceivers of the entity (those stations that can receive the entity
-        self.candidateReceiver=None         # the station that is finaly chosen to receive the entity
+        # boolean that is used to check weather the entity can proceed to the candidateReceiver
+        self.proceed = False
+        # list of candidateReceivers of the entity (those stations that can receive the entity
+        self.candidateReceivers = []
+        # the station that is finaly chosen to receive the entity
+        self.candidateReceiver = None
         # alias used for printing the Route
-        self.alias=None
-        self.remainingProcessingTime=remainingProcessingTime
-        self.remainingSetupTime=remainingSetupTime
-        self.status=status
-        
-    #===========================================================================
+        self.alias = None
+        self.remainingProcessingTime = remainingProcessingTime
+        self.remainingSetupTime = remainingSetupTime
+        self.status = status
+
+    # ===========================================================================
     # return the responsible operator for the current step, not implemented for entities
-    #===========================================================================
+    # ===========================================================================
     def responsibleForCurrentStep(self):
         return None
-   
+
     # =======================================================================
-    # outputs results to JSON File 
+    # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
         pass
-    
+
     # =======================================================================
-    # initializes all the Entity for a new simulation replication 
+    # initializes all the Entity for a new simulation replication
     # =======================================================================
     def initialize(self):
         pass
-    
-    #===========================================================================
+
+    # ===========================================================================
     # print the route (the different stations the entity moved through)
-    #===========================================================================
+    # ===========================================================================
     def printRoute(self):
         pass
-    
-    #===========================================================================
+
+    # ===========================================================================
     # method not implemented yet
-    #===========================================================================
+    # ===========================================================================
     def checkIfRequiredPartsReady(self):
         return True
-    
-    #===========================================================================
+
+    # ===========================================================================
     # method not implemented yet
-    #===========================================================================
+    # ===========================================================================
     def getRequiredParts(self):
         return []
-    

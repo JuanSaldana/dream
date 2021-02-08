@@ -27,7 +27,7 @@ Class that acts as an abstract. It should have no instances. All the core-object
 
 # from SimPy.Simulation import Process, Resource, now, SimEvent, waitevent
 import simpy
-from ManPyObject import ManPyObject
+from dream.simulation.ManPyObject import ManPyObject
 
 # ===========================================================================
 # the core object

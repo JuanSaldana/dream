@@ -25,75 +25,80 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All the Resources should inherit from it
 '''
 # from SimPy.Simulation import Resource
-import simpy
-from ManPyObject import ManPyObject
 
 # ===========================================================================
 #                    the resource that repairs the machines
 # ===========================================================================
+
+
+
+
+import simpy
+from dream.simulation.ManPyObject import ManPyObject
 class ObjectResource(ManPyObject):
-    
-    def __init__(self,id='',name='',**kw):
-        ManPyObject.__init__(self,id,name)
+
+    def __init__(self, id='', name='', **kw):
+        ManPyObject.__init__(self, id, name)
         self.initialized = False
         # list that holds the objectInterruptions that have this element as victim
-        self.objectInterruptions=[]        
+        self.objectInterruptions = []
         # alias used for printing the trace
-        self.alias=None
+        self.alias = None
         # list with the coreObjects IDs that the resource services
-        self.coreObjectIds=[]
+        self.coreObjectIds = []
         from Globals import G
-        G.ObjectResourceList.append(self) 
-        
+        G.ObjectResourceList.append(self)
+
     def initialize(self):
         from Globals import G
         # flag that shows if the resource is on shift
-        self.onShift=True
+        self.onShift = True
         # flag that shows if the resource is on break
-        self.onBreak=False
-        self.env=G.env
-        self.timeLastOperationStarted=0    #holds the time that the last repair was started        
-        self.Res=simpy.Resource(self.env, capacity=self.capacity)
+        self.onBreak = False
+        self.env = G.env
+        # holds the time that the last repair was started
+        self.timeLastOperationStarted = 0
+        self.Res = simpy.Resource(self.env, capacity=self.capacity)
         # variable that checks whether the resource is already initialized
         self.initialized = True
         # list with the coreObjects IDs that the resource services
-        self.coreObjectIds=[]
+        self.coreObjectIds = []
         # list with the coreObjects that the resource services
-        self.coreObjects=[]
+        self.coreObjects = []
         # flag that locks the resource so that it cannot get new jobs
-        self.isLocked=False
+        self.isLocked = False
         # lists that keep the start/endShiftTimes of the victim
-        self.endShiftTimes=[]
-        self.startShiftTimes=[]
-                
+        self.endShiftTimes = []
+        self.startShiftTimes = []
+
     # =======================================================================
     #                    checks if the worker is available
-    # =======================================================================       
-    def checkIfResourceIsAvailable(self,callerObject=None): 
+    # =======================================================================
+    def checkIfResourceIsAvailable(self, callerObject=None):
         # return true if the operator is idle and on shift
-        return len(self.Res.users)<self.capacity and self.onShift and (not self.isLocked) and (not self.onBreak)
-    
-       
+        return len(self.Res.users) < self.capacity and self.onShift and (not self.isLocked) and (not self.onBreak)
+
     # =======================================================================
     #                           returns the resource
     # =======================================================================
+
     def getResource(self):
         return self.Res
-    
+
     # =======================================================================
     #               returns the active queue of the resource
     # =======================================================================
     def getResourceQueue(self):
         return self.Res.users
-    
+
     # =======================================================================
     # check if the resource is already initialized
     # =======================================================================
     def isInitialized(self):
         return self.initialized
-    
-    #===========================================================================
+
+    # ===========================================================================
     # print the route (the different stations the resource was occupied by)
-    #===========================================================================
+    # ===========================================================================
     def printRoute(self):
         pass
